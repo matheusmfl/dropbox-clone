@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['www.shareicon.net']
+    remotePatterns: [{
+      protocol: 'https',
+      hostname: 'www.shareicon.net'
+    }]
   }
 }
 
