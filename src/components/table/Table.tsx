@@ -15,6 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "../ui/button"
+import { TrashIcon } from "lucide-react"
+import { FileType } from "../../../typings"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -61,16 +64,40 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === 'timestamp' ? (
+                      <div className="flex flex-col">
+                        <div className="text-sm">
+                          {(cell.getValue() as Date).toLocaleDateString()}
+                        </div>
+
+                        <div className="text-xs text-gray-500">
+                          {(cell.getValue() as Date).toLocaleDateString()}
+                        </div>
+                      </div>
+                    ) : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
+
                   </TableCell>
                 ))}
+                <TableCell key={(row.original as FileType).id}>
+                  <Button variant={"outline"} onClick={() => {
+                    console.log("ola")
+                    // openDeleteModal((row.original as FileType).id)
+                  }}
+                  >
+                    <TrashIcon size={20} />
+                  </Button>
+                </TableCell>
+
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                Você não possui arquivos.
               </TableCell>
+
             </TableRow>
           )}
         </TableBody>
