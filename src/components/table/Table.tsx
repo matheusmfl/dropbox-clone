@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "../ui/button"
-import { TrashIcon } from "lucide-react"
+import { PencilIcon, TrashIcon } from "lucide-react"
 import { FileType } from "../../../typings"
 
 interface DataTableProps<TData, TValue> {
@@ -33,6 +33,17 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+  function openDeleteModal(fileId: string) {
+    setFiledId(fileId)
+    setIsDeleteModalOpen(true)
+  }
+
+  function openRenameModal(fileId: string, filename: string) {
+    setFiledId(filedId)
+    setFileName(filename)
+    setIsRenameModalOpen(true)
+  }
 
   return (
     <div className="rounded-md border">
@@ -74,6 +85,16 @@ export function DataTable<TData, TValue>({
                           {(cell.getValue() as Date).toLocaleDateString()}
                         </div>
                       </div>
+                    ) : cell.column.id === 'filename' ? (
+                      <p onClick={() => {
+                        // openRenameModal(
+                        //   (row.original as FileType).id,
+                        //   (row.original as FileType).filename
+                        // )
+                      }} className="underline flex items-center text-blue-500 hover:cursor-pointer">
+                        {cell.getValue() as string}{" "}
+                        <PencilIcon size={15} className="ml-2" />
+                      </p>
                     ) : (
                       flexRender(cell.column.columnDef.cell, cell.getContext())
                     )}
