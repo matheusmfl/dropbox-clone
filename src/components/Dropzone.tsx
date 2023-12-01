@@ -6,14 +6,16 @@ import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/fi
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react'
 import Dropzone from 'react-dropzone'
+import toast from "react-hot-toast"
 
 function DropzoneComponent() {
 
   const [loading, setLoading] = useState(false)
-  const { isLoaded, isSignedIn, user } = useUser()
+  const { user } = useUser()
 
 
   function onDrop(acceptedFiles: File[]) {
+
     acceptedFiles.forEach(file => {
       const reader = new FileReader();
 
@@ -38,7 +40,7 @@ function DropzoneComponent() {
 
     setLoading(true)
 
-    //do what needs to be done...
+    const toastId = toast.loading('Carregando ...')
 
     const docRef = await addDoc(collection(db, "users", user.id, "files"), {
       userId: user.id,
@@ -63,12 +65,15 @@ function DropzoneComponent() {
     }
     )
 
+    toast.success("Upload concluído!", {
+      id: toastId
+    })
     setLoading(false)
 
 
   }
 
-  const maxSize = 2097152;
+  const maxSize = 20971520;
 
 
   return (
