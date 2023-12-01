@@ -19,6 +19,7 @@ import { Button } from "../ui/button"
 import { PencilIcon, TrashIcon } from "lucide-react"
 import { FileType } from "../../../typings"
 import { useAppStore } from "@/store/store"
+import { DeleteModal } from "../DeleteModal"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -60,6 +61,8 @@ export function DataTable<TData, TValue>({
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
+
+
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
@@ -82,6 +85,8 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
+
+                <DeleteModal />
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {cell.column.id === 'timestamp' ? (
@@ -96,10 +101,10 @@ export function DataTable<TData, TValue>({
                       </div>
                     ) : cell.column.id === 'filename' ? (
                       <p onClick={() => {
-                        // openRenameModal(
-                        //   (row.original as FileType).id,
-                        //   (row.original as FileType).filename
-                        // )
+                        openRenameModal(
+                          (row.original as FileType).id,
+                          (row.original as FileType).filename
+                        )
                       }} className="underline flex items-center text-blue-500 hover:cursor-pointer">
                         {cell.getValue() as string}{" "}
                         <PencilIcon size={15} className="ml-2" />
@@ -112,8 +117,8 @@ export function DataTable<TData, TValue>({
                 ))}
                 <TableCell key={(row.original as FileType).id}>
                   <Button variant={"outline"} onClick={() => {
-                    console.log("ola")
-                    // openDeleteModal((row.original as FileType).id)
+
+                    openDeleteModal((row.original as FileType).id)
                   }}
                   >
                     <TrashIcon size={20} />

@@ -73,7 +73,7 @@ function TableWrapper(
     </div>
   )
 
-  console.log(initialFiles)
+
   return (
     <div className='flex flex-col space-y-5 pb-10'>
       {/* button */}
