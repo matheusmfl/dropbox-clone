@@ -20,6 +20,8 @@ import { PencilIcon, TrashIcon } from "lucide-react"
 import { FileType } from "../../../typings"
 import { useAppStore } from "@/store/store"
 import { DeleteModal } from "../DeleteModal"
+import { RenameModal } from "../RenameModal"
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -86,6 +88,7 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
 
+                <RenameModal />
                 <DeleteModal />
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -107,7 +110,12 @@ export function DataTable<TData, TValue>({
                         )
                       }} className="underline flex items-center text-blue-500 hover:cursor-pointer">
                         {cell.getValue() as string}{" "}
-                        <PencilIcon size={15} className="ml-2" />
+                        <PencilIcon size={15} className="ml-2" onClick={() => {
+                          openRenameModal(
+                            (row.original as FileType).id,
+                            (row.original as FileType).filename
+                          )
+                        }} />
                       </p>
                     ) : (
                       flexRender(cell.column.columnDef.cell, cell.getContext())
