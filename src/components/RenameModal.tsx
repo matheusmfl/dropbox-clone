@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { toast } from 'react-hot-toast'
 import { Input } from "./ui/input"
 import { useState } from "react"
 import { doc, updateDoc } from "firebase/firestore"
@@ -30,8 +31,14 @@ export function RenameModal() {
   async function renameFile() {
     if (!user || !fileId) return
 
+    const toastId = toast.loading("Renomeando ...")
+
     await updateDoc(doc(db, "users", user.id, "files", fileId), {
       filename: input
+    })
+
+    toast.success("Renomeado com sucesso!", {
+      id: toastId
     })
 
     setInput("")
